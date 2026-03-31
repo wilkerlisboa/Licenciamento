@@ -1,48 +1,91 @@
+import { NavLink, useNavigate } from "react-router-dom"
+
 export default function Menu() {
+  const navigate = useNavigate()
+
+  function handleLogout() {
+    localStorage.removeItem("token")
+    navigate("/")
+  }
 
   return (
+    <div className="d-flex flex-column vh-100 bg-dark text-white p-4" style={{width:"260px"}}>
 
-    <div className="bg-dark text-white vh-100 p-3" style={{width:"250px"}}>
+      {/* LOGO */}
+      <div className="mb-5">
+        <h5 className="fw-bold mb-0">Licenciamentos</h5>
+        <small className="text-secondary">Serviços</small>
+      </div>
 
-      <h4 className="text-center mb-4">
-        Sistema
-      </h4>
+      {/* MENU */}
+      <ul className="nav flex-column gap-2">
 
-      <ul className="nav flex-column">
-
-        <li className="nav-item mb-2">
-          <a className="nav-link text-white" href="#">
-            📊 Dashboard
-          </a>
+        <li>
+          <NavLink 
+            to="/usuarios"
+            className={({ isActive }) =>
+              `nav-link text-white rounded-3 px-3 py-2 d-flex align-items-center gap-2 
+              ${isActive ? "bg-primary" : ""}`
+            }
+          >
+            <i className="bi bi-people"></i>
+            Usuários
+          </NavLink>
         </li>
 
-        <li className="nav-item mb-2">
-          <a className="nav-link text-white" href="#">
-            👤 Usuários
-          </a>
+        <li>
+          <NavLink 
+            to="/lojas"
+            className={({ isActive }) =>
+              `nav-link text-white rounded-3 px-3 py-2 d-flex align-items-center gap-2 
+              ${isActive ? "bg-primary" : ""}`
+            }
+          >
+            <i className="bi bi-shop"></i>
+            Lojas
+          </NavLink>
         </li>
 
-        <li className="nav-item mb-2">
-          <a className="nav-link text-white" href="#">
-            📦 Produtos
-          </a>
-        </li>
-
-        <li className="nav-item mb-2">
-          <a className="nav-link text-white" href="#">
-            ⚙ Configurações
-          </a>
-        </li>
-
-        <li className="nav-item mt-4">
-          <a className="nav-link text-danger" href="#">
-            🚪 Sair
-          </a>
+        <li>
+          <NavLink 
+            to="/licencas"
+            className={({ isActive }) =>
+              `nav-link text-white rounded-3 px-3 py-2 d-flex align-items-center gap-2 
+              ${isActive ? "bg-primary" : ""}`
+            }
+          >
+            <i className="bi bi-file-earmark-text"></i>
+            Licenças
+          </NavLink>
         </li>
 
       </ul>
 
-    </div>
+      {/* FOOTER */}
+      <div className="mt-auto">
 
+        <div className="d-flex align-items-center gap-3 p-2 rounded bg-secondary bg-opacity-25 mb-3">
+          <div className="bg-primary rounded-circle d-flex justify-content-center align-items-center fw-bold"
+               style={{width:"40px", height:"40px"}}>
+            W
+          </div>
+
+          <div className="flex-grow-1">
+            <small className="d-block fw-semibold">Wilker</small>
+            <small className="text-secondary">Administrador</small>
+          </div>
+        </div>
+
+        <button 
+          onClick={handleLogout}
+          className="btn btn-outline-danger w-100 d-flex align-items-center justify-content-center gap-2"
+        >
+          <i className="bi bi-box-arrow-right"></i>
+          Sair
+        </button>
+
+      </div>
+
+    </div>
   )
 }

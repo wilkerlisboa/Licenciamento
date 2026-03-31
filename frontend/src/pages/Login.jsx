@@ -1,13 +1,42 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
 
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    console.log({ email, senha });
+
+    try {
+      const response = await fetch("http://localhost:5245/api/usuarios/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          email: email,
+          senha: senha
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error("Email ou senha inválidos");
+      }
+
+      const data = await response.json();
+
+      // salva token
+      localStorage.setItem("token", data.token);
+
+      // redireciona
+      navigate("/usuarios");
+
+    } catch (error) {
+      alert(error.message);
+    }
   };
 
   return (
@@ -37,6 +66,7 @@ export default function Login() {
                   placeholder="Digite seu email"
                   value={email}
                   onChange={(e)=>setEmail(e.target.value)}
+                  required
                 />
               </div>
             </div>
@@ -53,6 +83,7 @@ export default function Login() {
                   placeholder="Digite sua senha"
                   value={senha}
                   onChange={(e)=>setSenha(e.target.value)}
+                  required
                 />
               </div>
             </div>
@@ -74,6 +105,5 @@ export default function Login() {
       </div>
 
     </div>
-
   );
-}
+} 
