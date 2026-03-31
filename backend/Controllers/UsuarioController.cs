@@ -15,6 +15,26 @@ namespace backend.Controllers
             _context = context;
         }
 
+        // 🔐 LOGIN
+        [HttpPost("login")]
+        public IActionResult Login([FromBody] Usuario login)
+        {
+            var usuario = _context.Usuarios
+                .FirstOrDefault(u =>
+                    u.Email.Trim().ToLower() == login.Email.Trim().ToLower() &&
+                    u.Senha == login.Senha
+                );
+
+            if (usuario == null)
+                return Unauthorized("Email ou senha inválidos");
+
+            return Ok(new
+            {
+                token = usuario.Token,
+                email = usuario.Email
+            });
+        }
+
         // Criar usuário
         [HttpPost]
         public IActionResult CriarUsuario([FromBody] Usuario usuario)

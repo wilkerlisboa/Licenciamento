@@ -6,6 +6,18 @@ var builder = WebApplication.CreateBuilder(args);
 // Controllers
 builder.Services.AddControllers();
 
+// CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        policy =>
+        {
+            policy.AllowAnyOrigin()
+                  .AllowAnyMethod()
+                  .AllowAnyHeader();
+        });
+});
+
 // Banco SQLite
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite("Data Source=licenca.db"));
@@ -24,6 +36,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// 👇 AQUI ESTÁ A CORREÇÃO
+app.UseCors("AllowAll");
 
 app.UseMiddleware<ApiKeyMiddleware>();
 
